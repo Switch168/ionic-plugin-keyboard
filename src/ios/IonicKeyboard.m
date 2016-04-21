@@ -42,6 +42,18 @@
                                    //deprecated
                                    [weakSelf.commandDelegate evalJs:@"cordova.fireWindowEvent('native.hidekeyboard'); "];
                                }];
+    
+    _shrinkViewKeyboardWillChangeFrameObserver = [nc addObserverForName:UIKeyboardWillChangeFrameNotification
+                                                                 object:nil
+                                                                  queue:[NSOperationQueue mainQueue]
+                                                             usingBlock:^(NSNotification* notification) {
+                                                                 CGRect screen = [[UIScreen mainScreen] bounds];
+                                                                 CGRect keyboard = ((NSValue*)notification.userInfo[@"UIKeyboardFrameEndUserInfoKey"]).CGRectValue;
+                                                                 CGRect intersection = CGRectIntersection(screen, keyboard);
+                                                                 CGFloat height = MIN(intersection.size.width, intersection.size.height);
+                                                                 [weakSelf.commandDelegate evalJs: [NSString stringWithFormat:@"cordova.fireWindowEvent('keyboardHeightWillChange', { 'keyboardHeight': %f })", height]];
+                                                             }];
+
 }
 - (BOOL)disableScroll {
     return _disableScroll;
@@ -131,6 +143,7 @@ static IMP WKOriginalImp;
 
     [nc removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [nc removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [nc removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 /* ------------------------------------------------------------- */

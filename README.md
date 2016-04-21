@@ -124,3 +124,22 @@ Supported Platforms
 -------------------
 
 - iOS, Android, Blackberry 10, Windows
+
+
+## keyboardHeightWillChange
+
+This event is fired when the keyboard is fully closed.
+
+    window.addEventListener('keyboardHeightWillChange', function (event) {
+        // Describe your logic which will be run each time when keyboard is about to be closed.
+        console.log(event.keyboardHeight);
+    });
+
+#### Description
+
+Attach handler to this event to be able to receive notification when keyboard is about to be closed.
+
+
+#### Supported Platforms
+
+- iOS

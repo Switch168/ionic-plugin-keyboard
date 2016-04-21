@@ -3,6 +3,8 @@
 @interface IonicKeyboard : CDVPlugin <UIScrollViewDelegate> {
     @protected
     id _keyboardShowObserver, _keyboardHideObserver;
+    @protected
+    id _shrinkViewKeyboardWillChangeFrameObserver;
 }
 
 @property (readwrite, assign) BOOL hideKeyboardAccessoryBar;
